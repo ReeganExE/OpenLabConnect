@@ -23,7 +23,7 @@ module.exports = {
     return nodemon({
         script: 'server/server.js',
         ext: 'js',
-        exec: 'node --debug',
+        exec: 'node --inspect',
         ignore: ['client', 'dist', 'node_modules', 'gulpfile.js']
       })
       .on('start', function () {

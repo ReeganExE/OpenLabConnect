@@ -86,6 +86,7 @@
   "scripts": {
     "start": "node server/server.js",
     "test": "gulp test",
+    "dev": "gulp",
     "mediator": "node mediator/start.js"
   }
 }

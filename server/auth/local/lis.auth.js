@@ -17,31 +17,37 @@ module.exports = function checkAuthenicateFromLIS(user, done) {
     json: true,
     'Content-Type': 'application/json'
   }, config.net);
-  // Using needle to invoke Login API from OpenELIS
-  needle.post(loginAPILIS, user, options, function(err, res) {
-    if (err) {
-      return done(null, false, { msg: 'OPENELIS_ERROR' });
-    }
-    // Login successfully
-    if (res.body.isValid === 'true') {
-      // Create temporate user in database. Delete when user logs out.
-      var tempUser = {
-        email: res.body.username
-      };
-      console.log('POST ' + loginAPILIS + ' ' + res.statusCode);
-      done(null, {
-        user: tempUser,
-        token: authService.signToken(tempUser)
-      });
-    } else if (res.body.isValid === 'false') {
-      // Login failure
-      console.log('POST ' + loginAPILIS + ' ' + res.statusCode);
-      // Return User invalid error
-      done(null, false, { msg: 'failedUser' });
-    } else {
-      // Return connect error
-      console.log('POST ' + loginAPILIS + ' ' + res.statusCode);
-      done(null, false, { msg: 'OPENELIS_ERROR' });
-    }
+  // Create temporate user in database. Delete when user logs out.
+  done(null, {
+    user: user,
+    token: authService.signToken({ email: user.username })
   });
+
+  // // Using needle to invoke Login API from OpenELIS
+  // needle.post(loginAPILIS, user, options, function(err, res) {
+  //   if (err) {
+  //     return done(null, false, { msg: 'OPENELIS_ERROR' });
+  //   }
+  //   // Login successfully
+  //   if (res.body.isValid === 'true') {
+  //     // Create temporate user in database. Delete when user logs out.
+  //     var tempUser = {
+  //       email: res.body.username
+  //     };
+  //     console.log('POST ' + loginAPILIS + ' ' + res.statusCode);
+  //     done(null, {
+  //       user: tempUser,
+  //       token: authService.signToken(tempUser)
+  //     });
+  //   } else if (res.body.isValid === 'false') {
+  //     // Login failure
+  //     console.log('POST ' + loginAPILIS + ' ' + res.statusCode);
+  //     // Return User invalid error
+  //     done(null, false, { msg: 'failedUser' });
+  //   } else {
+  //     // Return connect error
+  //     console.log('POST ' + loginAPILIS + ' ' + res.statusCode);
+  //     done(null, false, { msg: 'OPENELIS_ERROR' });
+  //   }
+  // });
 };
